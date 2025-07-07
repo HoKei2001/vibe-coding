@@ -1,0 +1,27 @@
+# docker network create utilities
+networks:
+  utilities:
+    external: true
+
+services:
+  huddle-up:
+    build: 
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ~/.ssh:/opt/python-user/.ssh
+      - ../.devcontainer/.zshrc:/opt/python-user/.zshrc
+      - ..:/opt/python-user/code
+    command: ["tail -f /dev/null"]
+    networks:
+      - utilities
+
+  postgres:
+    image: postgres:17
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ../.devcontainer/init_sql:/docker-entrypoint-initdb.d
+    networks:
+      - utilities
