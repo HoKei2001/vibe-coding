@@ -12,15 +12,21 @@ const api: AxiosInstance = axios.create({
 });
 
 // Token management
+// 使用sessionStorage支持多标签页多用户测试
+// 如果需要持久化登录，将USE_SESSION_STORAGE设为false
+const USE_SESSION_STORAGE = true; // 开发时设为true，生产时设为false
+
+const storage = USE_SESSION_STORAGE ? sessionStorage : localStorage;
+
 export const tokenManager = {
   get: (): string | null => {
-    return localStorage.getItem('access_token');
+    return storage.getItem('token');
   },
   set: (token: string) => {
-    localStorage.setItem('access_token', token);
+    storage.setItem('token', token);
   },
   remove: () => {
-    localStorage.removeItem('access_token');
+    storage.removeItem('token');
   },
 };
 

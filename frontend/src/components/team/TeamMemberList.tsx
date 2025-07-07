@@ -77,9 +77,9 @@ const TeamMemberList: React.FC<TeamMemberListProps> = ({ team, members, onInvite
     // 不能管理自己
     if (member.user.id === currentUser.id) return false;
     
-    // 只有所有者可以管理其他成员
+    // 所有者和管理员可以管理其他成员
     const currentUserMember = members.find(m => m.user.id === currentUser.id);
-    return currentUserMember?.role === 'owner';
+    return currentUserMember?.role === 'owner' || currentUserMember?.role === 'admin';
   };
 
   const handleRemoveMember = async (member: TeamMember) => {

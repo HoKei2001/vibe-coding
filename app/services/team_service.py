@@ -133,17 +133,24 @@ class TeamService:
         """添加团队成员"""
         # 检查邀请者权限
         if not await self.check_team_permission(team_id, inviter_id, [TeamRole.OWNER, TeamRole.ADMIN]):
-            raise PermissionError("Insufficient permissions to invite members")
+            raise PermissionError("只有团队所有者和管理员才能邀请新成员")
         
         # 检查用户是否已经是团队成员
         existing_member = await self.get_team_member(team_id, user_id)
         if existing_member:
-            raise ValueError("User is already a team member")
+            raise ValueError(f"用户ID {user_id} 已经是团队成员（角色：{existing_member.role.value}）")
         
         # 检查团队是否存在
         team = await self.get_team_by_id(team_id)
         if not team:
-            raise ValueError("Team not found")
+            raise ValueError("团队不存在")
+        
+        # 检查被邀请的用户是否存在
+        user_query = select(User).where(User.id == user_id)
+        user_result = await self.db.execute(user_query)
+        user = user_result.scalar_one_or_none()
+        if not user:
+            raise ValueError(f"用户ID {user_id} 不存在，请检查用户ID是否正确")
         
         # 添加成员
         team_member = TeamMember(
@@ -154,8 +161,9 @@ class TeamService:
         
         self.db.add(team_member)
         await self.db.commit()
-        await self.db.refresh(team_member)
-        return team_member
+        
+        # 重新查询以预加载 user 关系，避免序列化时的 MissingGreenlet 错误
+        return await self.get_team_member(team_id, user_id)
     
     async def remove_team_member(self, team_id: int, user_id: int, remover_id: int) -> bool:
         """移除团队成员"""
@@ -198,8 +206,9 @@ class TeamService:
         
         member.role = new_role
         await self.db.commit()
-        await self.db.refresh(member)
-        return member
+        
+        # 重新查询以预加载 user 关系，避免序列化时的 MissingGreenlet 错误
+        return await self.get_team_member(team_id, user_id)
     
     async def get_team_member(self, team_id: int, user_id: int) -> Optional[TeamMember]:
         """获取团队成员"""

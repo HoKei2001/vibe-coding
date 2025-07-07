@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { store } from './store';
 import { useAppDispatch, useAppSelector } from './hooks/redux';
-import { getCurrentUser } from './store/slices/authSlice';
+import { getCurrentUser, logout } from './store/slices/authSlice';
 import LoginForm from './components/auth/LoginForm';
 import RegisterForm from './components/auth/RegisterForm';
 import { TeamManagement, TeamDetail } from './components/team';
@@ -11,7 +11,8 @@ import { ChannelManagement } from './components/channel';
 import { ChatInterface } from './components/chat';
 import { Settings } from './components/settings';
 import { ThemeProvider } from './contexts/ThemeContext';
-import ThemeToggle from './components/ui/ThemeToggle';
+import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
+import { ThemeToggle, LanguageToggle } from './components/ui';
 import { Users, MessageSquare, Settings as SettingsIcon } from 'lucide-react';
 
 // Protected Route wrapper
@@ -24,6 +25,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 const AuthPage: React.FC<{ isLogin: boolean }> = ({ isLogin }) => {
   const [currentMode, setCurrentMode] = useState(isLogin);
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const { t } = useLanguage();
   const navigate = useNavigate();
   
   // Update mode when prop changes
@@ -52,9 +54,10 @@ const AuthPage: React.FC<{ isLogin: boolean }> = ({ isLogin }) => {
       <div className="absolute top-0 left-1/4 w-72 h-72 bg-primary-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse-slow" />
       <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse-slow animate-delay-1000" />
       
-      {/* 主题切换按钮 */}
-      <div className="absolute top-6 right-6">
-        <ThemeToggle className="bg-white dark:bg-dark-800 shadow-lg" />
+      {/* 语言和主题切换按钮 */}
+      <div className="absolute top-6 right-6 flex items-center space-x-3">
+        <LanguageToggle className="bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm" />
+        <ThemeToggle className="bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm" />
       </div>
       
       {/* 认证表单 */}
@@ -64,7 +67,7 @@ const AuthPage: React.FC<{ isLogin: boolean }> = ({ isLogin }) => {
             Huddle Up
           </h1>
           <p className="text-secondary-600 dark:text-secondary-400">
-            团队协作，从这里开始
+            {t('dashboard.subtitle')}
           </p>
         </div>
         
@@ -83,11 +86,12 @@ const AuthPage: React.FC<{ isLogin: boolean }> = ({ isLogin }) => {
 // Dashboard component (updated with navigation)
 const Dashboard: React.FC = () => {
   const { user } = useAppSelector((state) => state.auth);
+  const { t } = useLanguage();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   
   const handleLogout = () => {
-    dispatch({ type: 'auth/logout/fulfilled' });
+    dispatch(logout());
   };
 
   return (
@@ -103,16 +107,17 @@ const Dashboard: React.FC = () => {
                 <span className="badge badge-primary">Beta</span>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
+              <LanguageToggle />
               <ThemeToggle />
-              <span className="text-secondary-700 dark:text-secondary-300 hidden sm:inline">
-                欢迎, {user?.username}
+              <span className="text-secondary-700 dark:text-secondary-300 hidden md:inline">
+                {t('dashboard.welcome')}, {user?.username}
               </span>
               <button
                 onClick={handleLogout}
                 className="btn btn-danger text-sm"
               >
-                退出登录
+                {t('nav.logout')}
               </button>
             </div>
           </div>
@@ -123,10 +128,10 @@ const Dashboard: React.FC = () => {
           {/* 欢迎区域 */}
           <div className="text-center animate-fade-in">
             <h2 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-2">
-              欢迎回来，{user?.full_name || user?.username}！
+              {t('dashboard.welcome.title')}, {user?.full_name || user?.username || ''}
             </h2>
             <p className="text-secondary-600 dark:text-secondary-400 max-w-2xl mx-auto">
-              开始创建团队，邀请成员，在频道中进行实时协作交流
+              {t('dashboard.subtitle')}
             </p>
           </div>
           
@@ -143,10 +148,10 @@ const Dashboard: React.FC = () => {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                    团队管理
+                    {t('dashboard.teams.title')}
                   </h3>
                   <p className="text-secondary-600 dark:text-secondary-400 text-sm">
-                    创建和管理您的团队
+                    {t('dashboard.teams.description')}
                   </p>
                 </div>
               </div>
@@ -163,10 +168,10 @@ const Dashboard: React.FC = () => {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100 group-hover:text-success-600 dark:group-hover:text-success-400 transition-colors">
-                    聊天室
+                    {t('dashboard.messages.title')}
                   </h3>
                   <p className="text-secondary-600 dark:text-secondary-400 text-sm">
-                    选择团队开始聊天
+                    {t('dashboard.messages.description')}
                   </p>
                 </div>
               </div>
@@ -183,10 +188,10 @@ const Dashboard: React.FC = () => {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100 group-hover:text-warning-600 dark:group-hover:text-warning-400 transition-colors">
-                    设置
+                    {t('nav.settings')}
                   </h3>
                   <p className="text-secondary-600 dark:text-secondary-400 text-sm">
-                    个人和应用设置
+                    {t('settings.subtitle')}
                   </p>
                 </div>
               </div>
@@ -199,7 +204,7 @@ const Dashboard: React.FC = () => {
               <h2 className="text-xl font-semibold text-secondary-900 dark:text-secondary-100">
                 🚀 开发进度
               </h2>
-              <span className="badge badge-success">95% 完成</span>
+              <span className="badge badge-success">98% 完成</span>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -211,7 +216,8 @@ const Dashboard: React.FC = () => {
                 { name: '实时聊天', completed: true },
                 { name: 'WebSocket实时通信', completed: true },
                 { name: '个人设置页面', completed: true },
-                { name: 'UI优化升级', completed: true, isNew: true },
+                { name: 'UI优化升级', completed: true },
+                { name: '中英文切换', completed: true, isNew: true },
               ].map((item, index) => (
                 <div 
                   key={item.name} 
@@ -238,12 +244,12 @@ const Dashboard: React.FC = () => {
             <div className="mt-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm text-secondary-600 dark:text-secondary-400">总体进度</span>
-                <span className="text-sm font-medium text-secondary-900 dark:text-secondary-100">95%</span>
+                <span className="text-sm font-medium text-secondary-900 dark:text-secondary-100">98%</span>
               </div>
               <div className="w-full bg-secondary-200 dark:bg-dark-700 rounded-full h-2">
                 <div 
                   className="bg-gradient-to-r from-success-500 to-primary-500 h-2 rounded-full transition-all duration-1000 ease-out"
-                  style={{ width: '95%' }}
+                  style={{ width: '98%' }}
                 />
               </div>
             </div>
@@ -328,9 +334,11 @@ const App: React.FC = () => {
   return (
     <Provider store={store}>
       <ThemeProvider>
-        <Router>
-          <AppContent />
-        </Router>
+        <LanguageProvider>
+          <Router>
+            <AppContent />
+          </Router>
+        </LanguageProvider>
       </ThemeProvider>
     </Provider>
   );

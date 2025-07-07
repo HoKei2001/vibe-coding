@@ -1,7 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { logout } from '../../store/slices/authSlice';
 import { ArrowLeft, LogOut } from 'lucide-react';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface NavigationProps {
   title: string;
@@ -17,9 +19,10 @@ const Navigation: React.FC<NavigationProps> = ({
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
+  const { t } = useLanguage();
 
   const handleLogout = () => {
-    dispatch({ type: 'auth/logout/fulfilled' });
+    dispatch(logout());
   };
 
   const handleBack = () => {
@@ -46,13 +49,13 @@ const Navigation: React.FC<NavigationProps> = ({
           </div>
           
           <div className="flex items-center space-x-4">
-            <span className="text-gray-700">欢迎, {user?.username}</span>
+            <span className="text-gray-700">{t('dashboard.welcome')}, {user?.username}</span>
             <button
               onClick={handleLogout}
               className="flex items-center space-x-2 px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition-colors"
             >
               <LogOut className="h-4 w-4" />
-              <span>退出</span>
+              <span>{t('nav.logout')}</span>
             </button>
           </div>
         </div>

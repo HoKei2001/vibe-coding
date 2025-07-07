@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, User, Shield, Bell, Palette } from 'lucide-react';
+import { useLanguage } from '../../contexts/LanguageContext';
 import ProfileSettings from './ProfileSettings';
 import AppearanceSettings from './AppearanceSettings';
 
@@ -8,32 +9,33 @@ type SettingsTab = 'profile' | 'security' | 'notifications' | 'appearance';
 
 const Settings: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<SettingsTab>('profile');
 
   const tabs = [
     {
       id: 'profile' as SettingsTab,
-      name: '个人资料',
+      name: t('settings.profile.title'),
       icon: User,
-      description: '管理您的基本信息和个人资料'
+      description: t('settings.profile.description')
     },
     {
       id: 'security' as SettingsTab,
-      name: '安全设置',
+      name: t('settings.security.title'),
       icon: Shield,
-      description: '密码和安全选项'
+      description: t('settings.security.description')
     },
     {
       id: 'notifications' as SettingsTab,
-      name: '通知设置',
+      name: t('settings.notifications.title'),
       icon: Bell,
-      description: '管理您的通知偏好'
+      description: t('settings.notifications.description')
     },
     {
       id: 'appearance' as SettingsTab,
-      name: '外观设置',
+      name: t('settings.appearance.title'),
       icon: Palette,
-      description: '主题和显示选项'
+      description: t('settings.appearance.description')
     }
   ];
 
@@ -44,11 +46,11 @@ const Settings: React.FC = () => {
       case 'security':
         return (
           <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">安全设置</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('settings.security.title')}</h3>
             <div className="text-gray-600">
-              <p>密码修改功能即将上线...</p>
+              <p>{t('settings.security.description')}</p>
               <p className="mt-2 text-sm">
-                注：后端暂未提供修改密码的API端点，此功能将在后续版本中实现。
+                {t('settings.security.note')}
               </p>
             </div>
           </div>
@@ -56,9 +58,12 @@ const Settings: React.FC = () => {
       case 'notifications':
         return (
           <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">通知设置</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('settings.notifications.title')}</h3>
             <div className="text-gray-600">
-              <p>通知设置功能即将上线...</p>
+              <p>{t('settings.notifications.description')}</p>
+              <p className="mt-2 text-sm">
+                {t('settings.notifications.note')}
+              </p>
             </div>
           </div>
         );
@@ -82,7 +87,9 @@ const Settings: React.FC = () => {
               >
                 <ArrowLeft className="h-5 w-5" />
               </button>
-              <h1 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100">设置</h1>
+              <h1 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100">
+                {t('settings.title')}
+              </h1>
             </div>
           </div>
         </div>
@@ -94,7 +101,9 @@ const Settings: React.FC = () => {
           <div className="lg:col-span-1">
             <div className="card sticky top-8">
               <div className="p-6">
-                <h2 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100 mb-6">设置选项</h2>
+                <h2 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100 mb-6">
+                  {t('settings.title')}
+                </h2>
                 <nav className="space-y-2">
                   {tabs.map((tab) => {
                     const Icon = tab.icon;
