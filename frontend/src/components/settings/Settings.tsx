@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, User, Shield, Bell, Palette } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import ProfileSettings from './ProfileSettings';
 import AppearanceSettings from './AppearanceSettings';
+import NotificationSettings from './NotificationSettings';
 
 type SettingsTab = 'profile' | 'security' | 'notifications' | 'appearance';
 
 const Settings: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<SettingsTab>('profile');
+
+  // 根据URL参数设置初始标签页
+  useEffect(() => {
+    const tab = searchParams.get('tab') as SettingsTab;
+    if (tab && ['profile', 'security', 'notifications', 'appearance'].includes(tab)) {
+      setActiveTab(tab);
+    }
+  }, [searchParams]);
 
   const tabs = [
     {
@@ -56,17 +66,7 @@ const Settings: React.FC = () => {
           </div>
         );
       case 'notifications':
-        return (
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('settings.notifications.title')}</h3>
-            <div className="text-gray-600">
-              <p>{t('settings.notifications.description')}</p>
-              <p className="mt-2 text-sm">
-                {t('settings.notifications.note')}
-              </p>
-            </div>
-          </div>
-        );
+        return <NotificationSettings />;
       case 'appearance':
         return <AppearanceSettings />;
       default:

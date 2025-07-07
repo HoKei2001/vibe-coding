@@ -57,12 +57,16 @@ export class WebSocketService {
           this.reconnectAttempts = 0;
           this.clearReconnectTimer();
           
-          // 如果指定了频道ID，加入频道
-          if (channelId) {
-            this.joinChannel(channelId);
-          }
+          // 确保连接状态完全同步后再进行操作
+          setTimeout(() => {
+            // 如果指定了频道ID，加入频道
+            if (channelId) {
+              this.joinChannel(channelId);
+            }
+            
+            this.emit('connected');
+          }, 10); // 10ms延迟确保状态同步
           
-          this.emit('connected');
           resolve();
         };
 
@@ -116,8 +120,8 @@ export class WebSocketService {
   joinChannel(channelId: number) {
     this.currentChannelId = channelId;
     this.send({
-      type: 'user_online',
-      data: { action: 'join_channel', channel_id: channelId },
+      type: 'join_channel',
+      data: { channel_id: channelId },
       channel_id: channelId,
       timestamp: new Date().toISOString()
     });
@@ -126,8 +130,8 @@ export class WebSocketService {
   // 离开频道
   leaveChannel(channelId: number) {
     this.send({
-      type: 'user_offline',
-      data: { action: 'leave_channel', channel_id: channelId },
+      type: 'leave_channel',
+      data: { channel_id: channelId },
       channel_id: channelId,
       timestamp: new Date().toISOString()
     });
@@ -193,11 +197,21 @@ export class WebSocketService {
 
   // 构建WebSocket URL
   private buildWebSocketUrl(): string {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const host = window.location.hostname;
-    const port = '8000'; // 后端WebSocket端口
+    // 检查是否为开发环境
+    const isDevelopment = import.meta.env.DEV;
     
-    return `${protocol}//${host}:${port}/ws?token=${this.token}`;
+    if (isDevelopment) {
+      // 开发环境：使用相对路径，通过 Vite 代理
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const host = window.location.host; // 包含端口号 (localhost:5173)
+      return `${protocol}//${host}/ws?token=${this.token}`;
+    } else {
+      // 生产环境：使用绝对URL
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const host = window.location.hostname;
+      const port = window.location.protocol === 'https:' ? '443' : '80';
+      return `${protocol}//${host}:${port}/ws?token=${this.token}`;
+    }
   }
 
   // 处理收到的消息

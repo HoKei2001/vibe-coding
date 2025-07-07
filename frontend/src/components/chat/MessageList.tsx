@@ -125,11 +125,11 @@ const MessageList: React.FC<MessageListProps> = ({ channelId, onReply }) => {
   }
 
   return (
-    <div className="flex-1 flex flex-col relative">
+    <div className="h-full flex flex-col relative">
       {/* 消息列表 */}
       <div
         ref={messagesContainerRef}
-        className="flex-1 overflow-y-auto"
+        className="flex-1 overflow-y-auto px-4"
         style={{ scrollBehavior: 'smooth' }}
       >
         {/* 加载更多指示器 */}
@@ -142,7 +142,7 @@ const MessageList: React.FC<MessageListProps> = ({ channelId, onReply }) => {
 
         {/* 消息内容 */}
         {currentMessages.length === 0 && !isLoading ? (
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex-1 flex items-center justify-center min-h-96">
             <div className="text-center">
               <MessageSquare className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">
@@ -188,7 +188,7 @@ const MessageList: React.FC<MessageListProps> = ({ channelId, onReply }) => {
 
         {/* 初始加载指示器 */}
         {isLoading && currentMessages.length === 0 && (
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex-1 flex items-center justify-center min-h-96">
             <div className="text-center">
               <Loader2 className="h-8 w-8 animate-spin text-gray-500 mx-auto mb-4" />
               <p className="text-gray-500">加载消息中...</p>

@@ -54,7 +54,9 @@ class MessageService:
         self.db.add(db_message)
         await self.db.commit()
         await self.db.refresh(db_message)
-        return db_message
+        
+        # 重新查询以获取完整的关系数据
+        return await self.get_message_by_id(db_message.id)
     
     async def get_message_by_id(self, message_id: int) -> Optional[Message]:
         """根据ID获取消息"""

@@ -189,21 +189,27 @@ async def get_team_members(
     return members
 
 
-@router.post("/{team_id}/members", response_model=TeamMemberResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/{team_id}/members", status_code=status.HTTP_201_CREATED)
 async def add_team_member(
     team_id: int,
     member_add: TeamMemberAdd,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
-    """添加团队成员"""
+    """发送团队邀请"""
     team_service = TeamService(db)
     
     try:
-        member = await team_service.add_team_member(
+        success = await team_service.add_team_member(
             team_id, member_add.user_id, current_user.id, member_add.role
         )
-        return member
+        if success:
+            return {"message": "邀请已发送，等待用户确认"}
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="邀请发送失败"
+            )
     except (PermissionError, ValueError) as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST if isinstance(e, ValueError) else status.HTTP_403_FORBIDDEN,

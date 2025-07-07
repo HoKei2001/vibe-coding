@@ -143,4 +143,29 @@ export interface UIState {
   activeTeam: number | null;
   activeChannel: number | null;
   sidebarOpen: boolean;
+}
+
+// Notification types
+export interface Notification {
+  id: number;
+  type: 'team_invite' | 'channel_invite' | 'message_mention' | 'system';
+  title: string;
+  message: string;
+  is_read: boolean;
+  created_at: string;
+  data?: {
+    team_id?: number;
+    team_name?: string;
+    channel_id?: number;
+    channel_name?: string;
+    inviter_id?: number;
+    inviter_name?: string;
+    role?: string;
+    [key: string]: any;
+  };
+}
+
+export interface TeamInviteRequest {
+  user_id: number;
+  role: 'admin' | 'member' | 'guest';
 } 

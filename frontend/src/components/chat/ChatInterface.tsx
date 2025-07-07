@@ -137,11 +137,11 @@ const ChatInterface: React.FC = () => {
   }
 
   return (
-    <div className="flex-1 flex flex-col h-full">
+    <div className="h-screen flex flex-col overflow-hidden">
       {/* 连接状态指示器 */}
       <ConnectionStatus />
 
-      {/* 频道头部 */}
+      {/* 频道头部 - 固定在顶部 */}
       <div className="flex-shrink-0 bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
@@ -238,30 +238,36 @@ const ChatInterface: React.FC = () => {
         )}
       </div>
 
-      {/* 主内容区域 */}
-      <div className="flex-1 flex">
-        {/* 消息区域 */}
-        <div className="flex-1 flex flex-col">
-          {/* 消息列表 */}
-          <MessageList
-            channelId={numericChannelId}
-            onReply={handleReply}
-          />
+      {/* 主内容区域 - 填充剩余空间 */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* 消息区域 - 可滚动 */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {/* 消息列表 - 这是唯一可滚动的区域 */}
+          <div className="flex-1 overflow-hidden">
+            <MessageList
+              channelId={numericChannelId}
+              onReply={handleReply}
+            />
+          </div>
 
-          {/* 正在输入指示器 */}
-          <TypingIndicator channelId={numericChannelId} />
+          {/* 正在输入指示器 - 固定 */}
+          <div className="flex-shrink-0">
+            <TypingIndicator channelId={numericChannelId} />
+          </div>
 
-          {/* 消息输入 */}
-          <MessageInput
-            channelId={numericChannelId}
-            replyToMessage={replyToMessage}
-            onCancelReply={handleCancelReply}
-          />
+          {/* 消息输入框 - 固定在底部 */}
+          <div className="flex-shrink-0">
+            <MessageInput
+              channelId={numericChannelId}
+              replyToMessage={replyToMessage}
+              onCancelReply={handleCancelReply}
+            />
+          </div>
         </div>
 
         {/* 频道信息侧边栏 */}
         {showChannelInfo && (
-          <div className="w-80 bg-gray-50 border-l border-gray-200 p-6">
+          <div className="w-80 bg-gray-50 border-l border-gray-200 p-6 overflow-y-auto">
             <div className="space-y-6">
               {/* 频道详情 */}
               <div>

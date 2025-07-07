@@ -49,7 +49,7 @@ export const teamService = {
   },
 
   // 添加团队成员
-  async addTeamMember(teamId: number, userId: number, role: 'admin' | 'member' | 'guest' = 'member'): Promise<TeamMember> {
+  async addTeamMember(teamId: number, userId: number, role: 'admin' | 'member' | 'guest' = 'member'): Promise<{message: string}> {
     const response = await api.post(`/teams/${teamId}/members`, {
       user_id: userId,
       role: role

@@ -13,7 +13,8 @@ import { Settings } from './components/settings';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { ThemeToggle, LanguageToggle } from './components/ui';
-import { Users, MessageSquare, Settings as SettingsIcon } from 'lucide-react';
+import { Users, MessageSquare, Settings as SettingsIcon, Bell } from 'lucide-react';
+import { fetchUnreadCount } from './store/slices/notificationSlice';
 
 // Protected Route wrapper
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -86,12 +87,30 @@ const AuthPage: React.FC<{ isLogin: boolean }> = ({ isLogin }) => {
 // Dashboard component (updated with navigation)
 const Dashboard: React.FC = () => {
   const { user } = useAppSelector((state) => state.auth);
+  const { unreadCount } = useAppSelector((state) => state.notifications);
   const { t } = useLanguage();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   
+  // 定期获取未读通知数量
+  useEffect(() => {
+    if (user) {
+      dispatch(fetchUnreadCount());
+      // 每30秒更新一次未读数量
+      const interval = setInterval(() => {
+        dispatch(fetchUnreadCount());
+      }, 30000);
+      
+      return () => clearInterval(interval);
+    }
+  }, [dispatch, user]);
+  
   const handleLogout = () => {
     dispatch(logout());
+  };
+
+  const handleNotificationClick = () => {
+    navigate('/settings?tab=notifications');
   };
 
   return (
@@ -113,6 +132,21 @@ const Dashboard: React.FC = () => {
               <span className="text-secondary-700 dark:text-secondary-300 hidden md:inline">
                 {t('dashboard.welcome')}, {user?.username}
               </span>
+              
+              {/* 通知按钮 */}
+              <button
+                onClick={handleNotificationClick}
+                className="relative p-2 rounded-full hover:bg-secondary-100 dark:hover:bg-dark-800 transition-colors"
+                title="通知"
+              >
+                <Bell className="h-5 w-5 text-secondary-600 dark:text-secondary-400" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                    {unreadCount > 99 ? '99+' : unreadCount}
+                  </span>
+                )}
+              </button>
+              
               <button
                 onClick={handleLogout}
                 className="btn btn-danger text-sm"

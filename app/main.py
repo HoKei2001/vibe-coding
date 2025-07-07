@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.api.v1 import api_router
+from app.websocket_routes import router as websocket_router
 from app.database.database import init_db
 from app.utils.config import config, load_config
 
@@ -43,6 +44,9 @@ app.add_middleware(
 
 # 包含API路由
 app.include_router(api_router, prefix="/api/v1")
+
+# 包含WebSocket路由
+app.include_router(websocket_router)
 
 
 @app.get("/")

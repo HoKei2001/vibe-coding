@@ -267,9 +267,9 @@ const InviteMemberForm: React.FC<InviteMemberFormProps> = ({ team, onClose, onSu
             <div className="text-xs text-gray-600">
               <p className="font-medium mb-1">{t('teams.invite.note.title')}：</p>
               <ul className="space-y-1">
-                <li>• {t('teams.invite.note.register')}</li>
-                <li>• {t('teams.invite.note.immediate')}</li>
-                <li>• {t('teams.invite.note.change')}</li>
+                <li>• 邀请将发送通知给用户，用户需要确认后才能加入团队</li>
+                <li>• 被邀请用户可以在通知中心查看并响应邀请</li>
+                <li>• 您可以随时在团队设置中管理成员角色</li>
               </ul>
             </div>
           </div>

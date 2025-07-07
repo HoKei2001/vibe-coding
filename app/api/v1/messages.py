@@ -14,6 +14,7 @@ from app.schemas.message import (
     MessageSearchParams, MessageStats, MessageMentions
 )
 from app.services.message_service import MessageService
+from app.services.websocket_manager import connection_manager
 
 router = APIRouter()
 
@@ -59,6 +60,44 @@ async def create_message(
     
     try:
         message = await message_service.create_message(message_create, current_user.id)
+        
+        # 通过WebSocket广播新消息给频道内的其他用户
+        await connection_manager.broadcast_to_channel(
+            message_create.channel_id,
+            {
+                "type": "message",
+                "data": {
+                    "id": message.id,
+                    "content": message.content,
+                    "is_edited": message.is_edited,
+                    "is_deleted": message.is_deleted,
+                    "author_id": message.author_id,
+                    "channel_id": message.channel_id,
+                    "parent_id": message.parent_id,
+                    "attachment_url": message.attachment_url,
+                    "attachment_type": message.attachment_type,
+                    "attachment_name": message.attachment_name,
+                    "attachment_size": message.attachment_size,
+                    "created_at": message.created_at.isoformat(),
+                    "updated_at": message.updated_at.isoformat(),
+                    "author": {
+                        "id": message.author.id,
+                        "username": message.author.username,
+                        "full_name": message.author.full_name,
+                        "email": message.author.email,
+                        "bio": message.author.bio,
+                        "avatar_url": message.author.avatar_url,
+                        "timezone": message.author.timezone,
+                        "is_online": message.author.is_online,
+                        "last_seen": message.author.last_seen.isoformat() if message.author.last_seen else None
+                    },
+                    "replies": []
+                },
+                "channel_id": message_create.channel_id,
+                "timestamp": message.created_at.isoformat()
+            }
+        )
+        
         return message
     except (PermissionError, ValueError) as e:
         raise HTTPException(

@@ -5,6 +5,7 @@ import teamSlice from './slices/teamSlice';
 import channelSlice from './slices/channelSlice';
 import messageSlice from './slices/messageSlice';
 import websocketSlice from './slices/websocketSlice';
+import notificationSlice from './slices/notificationSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     channels: channelSlice,
     messages: messageSlice,
     websocket: websocketSlice,
+    notifications: notificationSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
