@@ -124,14 +124,51 @@ class _ServiceConfig(ConfigValue):
         return f"Env: {self.env}"
 
 
+class _DatabaseConfig(ConfigValue):
+    def __init__(self) -> None:
+        super().__init__("database")
+
+    @cached_property
+    def host(self) -> str:
+        return self.get_value("host", str)
+
+    @cached_property
+    def port(self) -> int:
+        return self.get_value("port", int)
+
+    @cached_property
+    def name(self) -> str:
+        return self.get_value("name", str)
+
+    @cached_property
+    def user(self) -> str:
+        return self.get_value("user", str)
+
+    @cached_property
+    def password(self) -> str:
+        return self.get_value("password", str)
+
+    @cached_property
+    def schema(self) -> str:
+        return self.get_value("schema", str)
+
+    @cached_property
+    def url(self) -> str:
+        return f"postgresql://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}"
+
+    def __str__(self) -> str:
+        return f"Host: {self.host} Port: {self.port} DB: {self.name} User: {self.user} Schema: {self.schema}"
+
+
 class _Config:
     service = _ServiceConfig()
     llm = _LLMConfig()
     minio = _MinioConfig()
     knowledge_server = _KnowledgeServerConfig()
+    database = _DatabaseConfig()
 
     def __str__(self) -> str:
-        return f"Loaded config: LLM: {self.llm} Minio: {self.minio} Knowledge Server: {self.knowledge_server} Service: {self.service}"
+        return f"Loaded config: LLM: {self.llm} Minio: {self.minio} Knowledge Server: {self.knowledge_server} Database: {self.database} Service: {self.service}"
 
 
 config = _Config()

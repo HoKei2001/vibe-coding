@@ -1,15 +1,31 @@
 [project]
 name = "app"
 version = "0.1.0"
-description = ""
+description = "Huddle Up团队协作聊天应用后端"
 authors = [
     {name = "python-user"},
 ]
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [
-    "pydantic (>=2.11.4,<3.0.0)",
-    "pydantic-settings (>=2.9.1,<3.0.0)",
+    "fastapi>=0.104.1",
+    "uvicorn[standard]>=0.24.0",
+    "sqlalchemy>=2.0.0",
+    "alembic>=1.13.0",
+    "psycopg2-binary>=2.9.9",
+    "asyncpg>=0.29.0",
+    "email-validator>=2.1.0",
+    "python-jose[cryptography]>=3.3.0",
+    "python-multipart>=0.0.6",
+    "passlib[bcrypt]>=1.7.4",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.11.4,<3.0.0",
+    "pydantic-settings>=2.9.1,<3.0.0",
+    "websockets>=12.0",
+    "redis>=5.0.1",
+    "celery>=5.3.4",
+    "python-socketio>=5.10.0",
+    "aiofiles>=23.2.1",
 ]
 
 
@@ -26,6 +42,8 @@ black = "^25.1.0"
 isort = "^6.0.1"
 pytest = "^8.3.5"
 pytest-cov = "^6.1.1"
+pytest-asyncio = "^0.23.2"
+httpx = "^0.25.2"
 pre-commit = "^4.0.1"
 mypy = "^1.12.0"
 
