@@ -5,6 +5,7 @@ import { logout } from '../../store/slices/authSlice';
 import { fetchUnreadCount } from '../../store/slices/notificationSlice';
 import { ArrowLeft, LogOut, Bell } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { ThemeToggle, LanguageToggle } from '../ui';
 
 interface NavigationProps {
   title: string;
@@ -49,34 +50,49 @@ const Navigation: React.FC<NavigationProps> = ({
   };
 
   return (
-    <div className="bg-white shadow">
+    <div className="bg-white dark:bg-dark-900 shadow-sm border-b border-secondary-200 dark:border-dark-800 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
+        <div className="flex justify-between items-center py-6">
           <div className="flex items-center space-x-4">
             {showBackButton && (
               <button
                 onClick={handleBack}
-                className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                className="p-2 rounded-full hover:bg-secondary-100 dark:hover:bg-dark-800 transition-colors"
+                title={t('nav.back')}
               >
-                <ArrowLeft className="h-5 w-5 text-gray-600" />
+                <ArrowLeft className="h-5 w-5 text-secondary-600 dark:text-secondary-400" />
               </button>
             )}
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
-              <p className="text-sm text-gray-600">Huddle Up</p>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
+                {title}
+              </h1>
+              <div className="flex items-center space-x-2">
+                <p className="text-sm text-secondary-600 dark:text-secondary-400">Huddle Up</p>
+                <span className="badge badge-primary text-xs">Beta</span>
+              </div>
             </div>
           </div>
           
-          <div className="flex items-center space-x-4">
-            <span className="text-gray-700">{t('dashboard.welcome')}, {user?.username}</span>
+          <div className="flex items-center space-x-3">
+            {/* 语言切换 */}
+            <LanguageToggle />
+            
+            {/* 主题切换 */}
+            <ThemeToggle />
+            
+            {/* 用户欢迎信息 */}
+            <span className="text-secondary-700 dark:text-secondary-300 hidden md:inline">
+              {t('dashboard.welcome')}, {user?.username}
+            </span>
             
             {/* 通知按钮 */}
             <button
               onClick={handleNotificationClick}
-              className="relative p-2 rounded-full hover:bg-gray-100 transition-colors"
-              title="通知"
+              className="relative p-2 rounded-full hover:bg-secondary-100 dark:hover:bg-dark-800 transition-colors"
+              title={t('nav.notifications')}
             >
-              <Bell className="h-5 w-5 text-gray-600" />
+              <Bell className="h-5 w-5 text-secondary-600 dark:text-secondary-400" />
               {unreadCount > 0 && (
                 <span className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
                   {unreadCount > 99 ? '99+' : unreadCount}
@@ -84,12 +100,12 @@ const Navigation: React.FC<NavigationProps> = ({
               )}
             </button>
             
+            {/* 登出按钮 */}
             <button
               onClick={handleLogout}
-              className="flex items-center space-x-2 px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition-colors"
+              className="btn btn-danger text-sm"
             >
-              <LogOut className="h-4 w-4" />
-              <span>{t('nav.logout')}</span>
+              {t('nav.logout')}
             </button>
           </div>
         </div>

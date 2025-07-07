@@ -40,6 +40,8 @@ type TranslationKeys = {
   'nav.settings': string;
   'nav.profile': string;
   'nav.logout': string;
+  'nav.back': string;
+  'nav.notifications': string;
   
   // 仪表盘
   'dashboard.title': string;
@@ -176,6 +178,43 @@ type TranslationKeys = {
   'teams.members': string;
   'teams.channels': string;
   'teams.settings': string;
+  'teams.list.title': string;
+  'teams.list.empty': string;
+  'teams.list.create_first': string;
+  'teams.list.view_details': string;
+  'teams.members.title': string;
+  'teams.members.count': string;
+  'teams.members.empty': string;
+  'teams.members.invite_first': string;
+  'teams.members.remove': string;
+  'teams.members.remove_confirm': string;
+  'teams.members.remove_confirm_text': string;
+  'teams.members.you': string;
+  'teams.roles.owner': string;
+  'teams.roles.admin': string;
+  'teams.roles.member': string;
+  'teams.roles.guest': string;
+  'teams.create.title': string;
+  'teams.create.name': string;
+  'teams.create.name.placeholder': string;
+  'teams.create.name.required': string;
+  'teams.create.name.minLength': string;
+  'teams.create.name.maxLength': string;
+  'teams.create.slug': string;
+  'teams.create.slug.auto': string;
+  'teams.create.slug.regenerate': string;
+  'teams.create.slug.required': string;
+  'teams.create.slug.minLength': string;
+  'teams.create.slug.maxLength': string;
+  'teams.create.slug.pattern': string;
+  'teams.create.slug.placeholder': string;
+  'teams.create.slug.preview': string;
+  'teams.create.description': string;
+  'teams.create.description.placeholder': string;
+  'teams.create.description.required': string;
+  'teams.create.description.minLength': string;
+  'teams.create.description.maxLength': string;
+  'teams.create.creating': string;
   'teams.invite.title': string;
   'teams.invite.userid': string;
   'teams.invite.userid.placeholder': string;
@@ -195,6 +234,14 @@ type TranslationKeys = {
   'teams.invite.note.register': string;
   'teams.invite.note.immediate': string;
   'teams.invite.note.change': string;
+  'teams.invite.permission.insufficient': string;
+  'teams.invite.permission.admin_only': string;
+  'teams.invite.permission.current_role': string;
+  'teams.invite.permission.unknown': string;
+  'teams.invite.members.current': string;
+  'teams.invite.notes.notification': string;
+  'teams.invite.notes.response': string;
+  'teams.invite.notes.manage': string;
   
   // 频道
   'channels.title': string;
@@ -210,6 +257,7 @@ type TranslationKeys = {
   'messages.typing': string;
   'messages.online': string;
   'messages.offline': string;
+  'teams.created_at': string;
 };
 
 // 多语言资源
@@ -240,6 +288,8 @@ const translations: Record<Language, TranslationKeys> = {
     'nav.settings': '设置',
     'nav.profile': '个人资料',
     'nav.logout': '退出登录',
+    'nav.back': '返回',
+    'nav.notifications': '通知',
     
     // 仪表盘
     'dashboard.title': '欢迎来到 Huddle Up',
@@ -376,6 +426,43 @@ const translations: Record<Language, TranslationKeys> = {
     'teams.members': '成员',
     'teams.channels': '频道',
     'teams.settings': '团队设置',
+    'teams.list.title': '我的团队',
+    'teams.list.empty': '您还没有加入任何团队',
+    'teams.list.create_first': '创建您的第一个团队',
+    'teams.list.view_details': '查看详情',
+    'teams.members.title': '团队成员',
+    'teams.members.count': '{{count}} 名成员',
+    'teams.members.empty': '还没有团队成员',
+    'teams.members.invite_first': '邀请第一个成员',
+    'teams.members.remove': '移除成员',
+    'teams.members.remove_confirm': '移除团队成员',
+    'teams.members.remove_confirm_text': '确定要将此成员从团队中移除吗？此操作无法撤销。',
+    'teams.members.you': '你',
+    'teams.roles.owner': '所有者',
+    'teams.roles.admin': '管理员',
+    'teams.roles.member': '成员',
+    'teams.roles.guest': '访客',
+    'teams.create.title': '创建新团队',
+    'teams.create.name': '团队名称',
+    'teams.create.name.placeholder': '请输入团队名称',
+    'teams.create.name.required': '团队名称是必填项',
+    'teams.create.name.minLength': '团队名称至少需要2个字符',
+    'teams.create.name.maxLength': '团队名称最多50个字符',
+    'teams.create.slug': '团队标识符 (URL)',
+    'teams.create.slug.auto': '自动生成',
+    'teams.create.slug.regenerate': '重新生成',
+    'teams.create.slug.required': '团队标识符是必填项',
+    'teams.create.slug.minLength': '团队标识符至少需要3个字符',
+    'teams.create.slug.maxLength': '团队标识符最多100个字符',
+    'teams.create.slug.pattern': '只能包含小写字母、数字和横线',
+    'teams.create.slug.placeholder': 'team-slug',
+    'teams.create.slug.preview': '团队链接：',
+    'teams.create.description': '团队描述',
+    'teams.create.description.placeholder': '请输入团队描述，告诉大家这个团队是做什么的...',
+    'teams.create.description.required': '团队描述是必填项',
+    'teams.create.description.minLength': '团队描述至少需要10个字符',
+    'teams.create.description.maxLength': '团队描述最多200个字符',
+    'teams.create.creating': '创建中...',
     'teams.invite.title': '邀请成员',
     'teams.invite.userid': '用户ID',
     'teams.invite.userid.placeholder': '请输入用户ID',
@@ -395,6 +482,14 @@ const translations: Record<Language, TranslationKeys> = {
          'teams.invite.note.register': '如果您还没有账户，请先注册。',
      'teams.invite.note.immediate': '邀请将立即生效。',
      'teams.invite.note.change': '您可以随时在设置中更改您的角色。',
+     'teams.invite.permission.insufficient': '权限不足：',
+     'teams.invite.permission.admin_only': '只有团队所有者和管理员才能邀请新成员。',
+     'teams.invite.permission.current_role': '您当前的角色是：',
+     'teams.invite.permission.unknown': '未知',
+     'teams.invite.members.current': '当前团队成员 (请勿重复邀请):',
+     'teams.invite.notes.notification': '邀请将发送通知给用户，用户需要确认后才能加入团队',
+     'teams.invite.notes.response': '被邀请用户可以在通知中心查看并响应邀请',
+     'teams.invite.notes.manage': '您可以随时在团队设置中管理成员角色',
      
      // 频道
      'channels.title': '频道管理',
@@ -410,6 +505,7 @@ const translations: Record<Language, TranslationKeys> = {
      'messages.typing': '正在输入...',
      'messages.online': '在线',
      'messages.offline': '离线',
+     'teams.created_at': '创建于 {{date}}',
   },
   en: {
     // Common
@@ -437,6 +533,8 @@ const translations: Record<Language, TranslationKeys> = {
     'nav.settings': 'Settings',
     'nav.profile': 'Profile',
     'nav.logout': 'Logout',
+    'nav.back': 'Back',
+    'nav.notifications': 'Notifications',
     
     // Dashboard
     'dashboard.title': 'Welcome to Huddle Up',
@@ -573,6 +671,43 @@ const translations: Record<Language, TranslationKeys> = {
     'teams.members': 'Members',
     'teams.channels': 'Channels',
     'teams.settings': 'Team Settings',
+    'teams.list.title': 'Team List',
+    'teams.list.empty': 'You have no teams, please create one!',
+    'teams.list.create_first': 'Create your first team',
+    'teams.list.view_details': 'View Details',
+    'teams.members.title': 'Team Members',
+    'teams.members.count': '{{count}} members',
+    'teams.members.empty': 'No members in this team yet',
+    'teams.members.invite_first': 'Invite Members',
+    'teams.members.remove': 'Remove',
+    'teams.members.remove_confirm': 'Are you sure you want to remove this member?',
+    'teams.members.remove_confirm_text': 'Removing this member will revoke their team access.',
+    'teams.members.you': 'You',
+    'teams.roles.owner': 'Team Owner',
+    'teams.roles.admin': 'Admin',
+    'teams.roles.member': 'Member',
+    'teams.roles.guest': 'Guest',
+    'teams.create.title': 'Create Team',
+    'teams.create.name': 'Team Name',
+    'teams.create.name.placeholder': 'e.g. Huddle Up Team',
+    'teams.create.name.required': 'Team name cannot be empty',
+    'teams.create.name.minLength': 'Team name must be at least 3 characters',
+    'teams.create.name.maxLength': 'Team name can be up to 50 characters',
+    'teams.create.slug': 'Team Identifier',
+    'teams.create.slug.auto': 'Auto-generate',
+    'teams.create.slug.regenerate': 'Regenerate',
+    'teams.create.slug.required': 'Team identifier cannot be empty',
+    'teams.create.slug.minLength': 'Team identifier must be at least 3 characters',
+    'teams.create.slug.maxLength': 'Team identifier can be up to 20 characters',
+    'teams.create.slug.pattern': 'Team identifier can only contain lowercase letters, numbers, and hyphens',
+    'teams.create.slug.placeholder': 'e.g. huddle-up-team',
+    'teams.create.slug.preview': 'Preview',
+    'teams.create.description': 'Team Description',
+    'teams.create.description.placeholder': 'Describe your team to other members...',
+    'teams.create.description.required': 'Team description cannot be empty',
+    'teams.create.description.minLength': 'Team description must be at least 10 characters',
+    'teams.create.description.maxLength': 'Team description can be up to 200 characters',
+    'teams.create.creating': 'Creating...',
     'teams.invite.title': 'Invite Members',
     'teams.invite.userid': 'User ID',
     'teams.invite.userid.placeholder': 'Enter User ID',
@@ -592,6 +727,14 @@ const translations: Record<Language, TranslationKeys> = {
          'teams.invite.note.register': 'If you do not have an account, please register first.',
      'teams.invite.note.immediate': 'The invitation will take effect immediately.',
      'teams.invite.note.change': 'You can change your role at any time in the settings.',
+     'teams.invite.permission.insufficient': 'You do not have sufficient permissions to send an invitation.',
+     'teams.invite.permission.admin_only': 'Only admins can send invitations.',
+     'teams.invite.permission.current_role': 'Your current role is {{role}}, you cannot send an invitation.',
+     'teams.invite.permission.unknown': 'Cannot determine your role, please try again later.',
+     'teams.invite.members.current': 'Current team members',
+     'teams.invite.notes.notification': 'Notifications',
+     'teams.invite.notes.response': 'Responses',
+     'teams.invite.notes.manage': 'Manage',
      
      // Channels
      'channels.title': 'Channel Management',
@@ -607,6 +750,7 @@ const translations: Record<Language, TranslationKeys> = {
      'messages.typing': 'Typing...',
      'messages.online': 'Online',
      'messages.offline': 'Offline',
+     'teams.created_at': 'Created at {{date}}',
   },
 };
 

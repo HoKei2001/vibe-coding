@@ -139,10 +139,10 @@ const InviteMemberForm: React.FC<InviteMemberFormProps> = ({ team, onClose, onSu
           
           {/* 权限检查警告 */}
           {!canInvite && (
-            <div className="mb-4 p-3 bg-yellow-100 border border-yellow-400 text-yellow-700 rounded">
+            <div className="mb-4 p-3 bg-yellow-100 dark:bg-yellow-900/20 border border-yellow-400 dark:border-yellow-600 text-yellow-700 dark:text-yellow-300 rounded">
               <p className="text-sm">
-                <strong>权限不足：</strong> 只有团队所有者和管理员才能邀请新成员。
-                您当前的角色是：<span className="font-medium">{currentUserMember?.role || '未知'}</span>
+                <strong>{t('teams.invite.permission.insufficient')}</strong> {t('teams.invite.permission.admin_only')}
+                {t('teams.invite.permission.current_role')}<span className="font-medium">{currentUserMember?.role || t('teams.invite.permission.unknown')}</span>
               </p>
             </div>
           )}
@@ -183,15 +183,15 @@ const InviteMemberForm: React.FC<InviteMemberFormProps> = ({ team, onClose, onSu
               
               {/* 当前团队成员列表 */}
               {team.members && team.members.length > 0 && (
-                <div className="mt-3 p-3 bg-gray-50 border border-gray-200 rounded-md">
-                  <p className="text-xs font-medium text-gray-700 mb-2">
-                    当前团队成员 (请勿重复邀请):
+                <div className="mt-3 p-3 bg-secondary-50 dark:bg-dark-700 border border-secondary-200 dark:border-dark-600 rounded-md">
+                  <p className="text-xs font-medium text-secondary-700 dark:text-secondary-300 mb-2">
+                    {t('teams.invite.members.current')}
                   </p>
                   <div className="space-y-1">
                     {team.members.map((member) => (
-                      <div key={member.id} className="flex items-center justify-between text-xs text-gray-600">
+                      <div key={member.id} className="flex items-center justify-between text-xs text-secondary-600 dark:text-secondary-400">
                         <span>{member.user.full_name || member.user.username}</span>
-                        <span className="text-gray-500">ID: {member.user.id}</span>
+                        <span className="text-secondary-500 dark:text-secondary-500">ID: {member.user.id}</span>
                       </div>
                     ))}
                   </div>
@@ -256,20 +256,20 @@ const InviteMemberForm: React.FC<InviteMemberFormProps> = ({ team, onClose, onSu
               disabled={isSubmitting || isLoading || !canInvite}
               className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {!canInvite ? '权限不足' : (isSubmitting || isLoading ? t('teams.invite.sending') : t('teams.invite.send'))}
+              {!canInvite ? t('teams.invite.permission.insufficient') : (isSubmitting || isLoading ? t('teams.invite.sending') : t('teams.invite.send'))}
             </button>
           </div>
         </form>
 
-        <div className="bg-gray-50 px-6 py-4 border-t">
+        <div className="bg-secondary-50 dark:bg-dark-700 px-6 py-4 border-t border-secondary-200 dark:border-dark-600">
           <div className="flex items-start space-x-2">
             <Users className="h-4 w-4 text-blue-500 mt-0.5" />
-            <div className="text-xs text-gray-600">
+            <div className="text-xs text-secondary-600 dark:text-secondary-400">
               <p className="font-medium mb-1">{t('teams.invite.note.title')}：</p>
               <ul className="space-y-1">
-                <li>• 邀请将发送通知给用户，用户需要确认后才能加入团队</li>
-                <li>• 被邀请用户可以在通知中心查看并响应邀请</li>
-                <li>• 您可以随时在团队设置中管理成员角色</li>
+                <li>• {t('teams.invite.notes.notification')}</li>
+                <li>• {t('teams.invite.notes.response')}</li>
+                <li>• {t('teams.invite.notes.manage')}</li>
               </ul>
             </div>
           </div>

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { getUserTeams, setCurrentTeam, clearError } from '../../store/slices/teamSlice';
+import { useLanguage } from '../../contexts/LanguageContext';
 import { Users, Settings, Plus, MoreHorizontal, Eye } from 'lucide-react';
 import type { Team } from '../../types';
 
@@ -12,6 +13,7 @@ interface TeamListProps {
 const TeamList: React.FC<TeamListProps> = ({ onCreateTeam }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { t } = useLanguage();
   const { teams, isLoading, error, currentTeam } = useAppSelector((state) => state.teams);
 
   useEffect(() => {
@@ -45,14 +47,14 @@ const TeamList: React.FC<TeamListProps> = ({ onCreateTeam }) => {
     return (
       <div className="p-4">
         <div className="animate-pulse">
-          <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+          <div className="h-4 bg-secondary-200 dark:bg-dark-700 rounded w-3/4 mb-4"></div>
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
               <div key={i} className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gray-200 rounded-lg"></div>
+                <div className="w-10 h-10 bg-secondary-200 dark:bg-dark-700 rounded-lg"></div>
                 <div className="flex-1">
-                  <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-                  <div className="h-3 bg-gray-200 rounded w-1/2 mt-1"></div>
+                  <div className="h-4 bg-secondary-200 dark:bg-dark-700 rounded w-2/3"></div>
+                  <div className="h-3 bg-secondary-200 dark:bg-dark-700 rounded w-1/2 mt-1"></div>
                 </div>
               </div>
             ))}
@@ -63,34 +65,38 @@ const TeamList: React.FC<TeamListProps> = ({ onCreateTeam }) => {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md">
+    <div className="bg-white dark:bg-dark-800 rounded-lg shadow-md border border-secondary-200 dark:border-dark-700">
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold text-gray-900">我的团队</h2>
+          <h2 className="text-xl font-semibold text-secondary-900 dark:text-secondary-100">
+            {t('teams.list.title')}
+          </h2>
           <button
             onClick={onCreateTeam}
-            className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="btn btn-primary flex items-center space-x-2"
           >
             <Plus className="h-4 w-4" />
-            <span>创建团队</span>
+            <span>{t('teams.create')}</span>
           </button>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+          <div className="mb-4 p-3 bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 rounded">
             {error}
           </div>
         )}
 
         {teams.length === 0 ? (
           <div className="text-center py-8">
-            <Users className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-500 mb-4">您还没有加入任何团队</p>
+            <Users className="h-12 w-12 text-secondary-400 dark:text-secondary-500 mx-auto mb-3" />
+            <p className="text-secondary-500 dark:text-secondary-400 mb-4">
+              {t('teams.list.empty')}
+            </p>
             <button
               onClick={onCreateTeam}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="btn btn-primary"
             >
-              创建您的第一个团队
+              {t('teams.list.create_first')}
             </button>
           </div>
         ) : (
@@ -98,10 +104,10 @@ const TeamList: React.FC<TeamListProps> = ({ onCreateTeam }) => {
             {teams.map((team) => (
               <div
                 key={team.id}
-                className={`p-4 border rounded-lg cursor-pointer transition-all hover:shadow-md hover:border-blue-300 ${
+                className={`p-4 border rounded-lg cursor-pointer transition-all hover:shadow-md hover:border-blue-300 dark:hover:border-blue-600 ${
                   currentTeam?.id === team.id
-                    ? 'border-blue-500 bg-blue-50'
-                    : 'border-gray-200'
+                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                    : 'border-secondary-200 dark:border-dark-600'
                 }`}
                 onClick={() => handleTeamClick(team)}
               >
@@ -111,33 +117,40 @@ const TeamList: React.FC<TeamListProps> = ({ onCreateTeam }) => {
                       {getTeamInitials(team.name)}
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-900">{team.name}</h3>
-                      <p className="text-sm text-gray-500 mt-1 line-clamp-2">
+                      <h3 className="font-medium text-secondary-900 dark:text-secondary-100">
+                        {team.name}
+                      </h3>
+                      <p className="text-sm text-secondary-500 dark:text-secondary-400 mt-1 line-clamp-2">
                         {team.description}
                       </p>
                     </div>
                   </div>
                   <div className="relative">
                     <button
-                      className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+                      className="p-1 rounded-full hover:bg-secondary-100 dark:hover:bg-dark-700 transition-colors"
                       onClick={(e) => {
                         e.stopPropagation();
                         // TODO: 添加团队菜单
                       }}
                     >
-                      <MoreHorizontal className="h-4 w-4 text-gray-400" />
+                      <MoreHorizontal className="h-4 w-4 text-secondary-400 dark:text-secondary-500" />
                     </button>
                   </div>
                 </div>
                 
-                <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
+                <div className="mt-4 flex items-center justify-between text-sm text-secondary-500 dark:text-secondary-400">
                   <div className="flex items-center space-x-1">
                     <Users className="h-4 w-4" />
-                    <span>成员</span>
+                    <span>
+                      {team.members && team.members.length > 0 
+                        ? t('teams.members.count', { count: team.members.length })
+                        : t('teams.members')
+                      }
+                    </span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <Eye className="h-4 w-4" />
-                    <span>查看详情</span>
+                    <span>{t('teams.list.view_details')}</span>
                   </div>
                 </div>
               </div>

@@ -8,7 +8,7 @@ import LoginForm from './components/auth/LoginForm';
 import RegisterForm from './components/auth/RegisterForm';
 import { TeamManagement, TeamDetail } from './components/team';
 import { ChannelManagement } from './components/channel';
-import { ChatInterface } from './components/chat';
+import { ChatInterface, ChatLayout } from './components/chat';
 import { Settings } from './components/settings';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
@@ -194,7 +194,7 @@ const Dashboard: React.FC = () => {
             {/* 聊天室卡片 */}
             <div 
               className="card-hover p-6 cursor-pointer group animate-fade-in animate-delay-100"
-              onClick={() => navigate('/teams')}
+              onClick={() => navigate('/chat')}
             >
               <div className="flex items-center space-x-4">
                 <div className="w-14 h-14 bg-gradient-to-br from-success-100 to-success-200 dark:from-success-900 dark:to-success-800 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
@@ -315,6 +315,22 @@ const AppContent: React.FC = () => {
         element={
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/chat"
+        element={
+          <ProtectedRoute>
+            <ChatLayout />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/chat/:teamId/:channelId"
+        element={
+          <ProtectedRoute>
+            <ChatLayout />
           </ProtectedRoute>
         }
       />

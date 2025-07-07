@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, User, Shield, Bell, Palette } from 'lucide-react';
+import { User, Shield, Bell, Palette } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
+import Navigation from '../common/Navigation';
 import ProfileSettings from './ProfileSettings';
 import AppearanceSettings from './AppearanceSettings';
 import NotificationSettings from './NotificationSettings';
@@ -76,24 +77,11 @@ const Settings: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-secondary-50 dark:bg-dark-950 transition-colors duration-300">
-      {/* Header */}
-      <div className="bg-white dark:bg-dark-900 shadow-sm border-b border-secondary-200 dark:border-dark-800">
-        <div className="max-w-7xl mx-auto container-padding">
-          <div className="flex items-center justify-between py-6">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => navigate('/dashboard')}
-                className="p-2 text-secondary-400 hover:text-secondary-600 dark:text-secondary-500 dark:hover:text-secondary-300 rounded-lg hover:bg-secondary-100 dark:hover:bg-dark-700 transition-colors"
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </button>
-              <h1 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100">
-                {t('settings.title')}
-              </h1>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Navigation 
+        title={t('settings.title')} 
+        showBackButton={true} 
+        backTo="/dashboard" 
+      />
 
       <div className="max-w-7xl mx-auto section-spacing container-padding">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
