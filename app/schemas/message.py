@@ -63,5 +63,26 @@ class MessageSummary(BaseModel):
         from_attributes = True
 
 
+class MessageSearchParams(BaseModel):
+    """消息搜索参数schema"""
+    query: str = Field(..., min_length=1, max_length=100)
+    channel_id: Optional[int] = None
+    team_id: Optional[int] = None
+    limit: int = Field(20, ge=1, le=100)
+
+
+class MessageStats(BaseModel):
+    """消息统计schema"""
+    total_messages: int
+    today_messages: int
+    attachment_messages: int
+
+
+class MessageMentions(BaseModel):
+    """用户提及消息schema"""
+    messages: List[MessageResponse]
+    unread_count: int = 0
+
+
 # 更新前向引用
 MessageResponse.model_rebuild() 

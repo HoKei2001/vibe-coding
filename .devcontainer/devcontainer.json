@@ -16,9 +16,17 @@
 			"extensions": [
 				"ms-python.python",
 				"ms-python.vscode-pylance",
+				"ms-vscode.vscode-typescript-next",
+				"bradlc.vscode-tailwindcss",
+				"esbenp.prettier-vscode",
+				"ms-vscode.vscode-json",
+				"ms-vscode.vscode-eslint",
+				"dsznajder.es7-react-js-snippets",
+				"formulahendry.auto-rename-tag",
+				"christian-kohler.path-intellisense"
 			]
 		}
 	},
-	"postCreateCommand": "poetry install --with dev",
+	"postCreateCommand": "poetry install --with dev && if [ -d frontend ]; then cd frontend && npm install; fi",
 	"remoteUser": "python-user"
 }

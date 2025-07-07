@@ -73,4 +73,21 @@ class ChannelSummary(BaseModel):
     member_count: int
 
     class Config:
-        from_attributes = True 
+        from_attributes = True
+
+
+class ChannelMemberAdd(BaseModel):
+    """添加频道成员schema"""
+    user_id: int
+    role: ChannelRole = ChannelRole.MEMBER
+
+
+class ChannelMemberUpdate(BaseModel):
+    """更新频道成员schema"""
+    role: ChannelRole
+
+
+class ChannelStats(BaseModel):
+    """频道统计schema"""
+    member_count: int
+    # message_count: int  # 将在消息功能完成后启用 

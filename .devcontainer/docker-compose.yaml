@@ -13,6 +13,9 @@ services:
       - ../.devcontainer/.zshrc:/opt/python-user/.zshrc
       - ..:/opt/python-user/code
     command: ["tail -f /dev/null"]
+    ports:
+      - "5173:5173"  # Vite dev server
+      - "8000:8000"  # FastAPI backend
     networks:
       - utilities
 

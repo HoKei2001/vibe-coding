@@ -26,6 +26,11 @@ RUN apt-get update && \
     pip install poetry==2.0.1 && \
     poetry config virtualenvs.create false
 
+# Install Node.js 20.x
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g npm@latest
+
 # Install zsh, omz, plugins
 RUN apt-get install -y zsh
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended

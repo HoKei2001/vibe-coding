@@ -74,4 +74,21 @@ class TeamSummary(BaseModel):
     member_count: int
 
     class Config:
-        from_attributes = True 
+        from_attributes = True
+
+
+class TeamMemberAdd(BaseModel):
+    """添加团队成员schema"""
+    user_id: int
+    role: TeamRole = TeamRole.MEMBER
+
+
+class TeamMemberUpdate(BaseModel):
+    """更新团队成员schema"""
+    role: TeamRole
+
+
+class TeamStats(BaseModel):
+    """团队统计schema"""
+    member_count: int
+    # channel_count: int  # 将在频道功能完成后启用 
