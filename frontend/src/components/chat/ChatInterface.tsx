@@ -7,6 +7,7 @@ import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 import TypingIndicator from './TypingIndicator';
 import ConnectionStatus from '../common/ConnectionStatus';
+import SmartSearch from '../ai/SmartSearch';
 import { 
   Hash, 
   Lock, 
@@ -16,9 +17,11 @@ import {
   Pin,
   Info,
   Wifi,
-  WifiOff
+  WifiOff,
+  Brain
 } from 'lucide-react';
 import type { Message, Channel } from '../../types';
+import type { SearchResult } from '../../services/aiService';
 
 const ChatInterface: React.FC = () => {
   const { teamId, channelId } = useParams<{ teamId: string; channelId: string }>();
@@ -28,6 +31,7 @@ const ChatInterface: React.FC = () => {
   const { connectionState } = useAppSelector((state) => state.websocket);
   const [replyToMessage, setReplyToMessage] = useState<Message | null>(null);
   const [showChannelInfo, setShowChannelInfo] = useState(false);
+  const [showSmartSearch, setShowSmartSearch] = useState(false);
   
   // WebSocket hook
   const { connect, disconnect, joinChannel, leaveChannel } = useWebSocket();
@@ -66,6 +70,12 @@ const ChatInterface: React.FC = () => {
 
   const handleCancelReply = () => {
     setReplyToMessage(null);
+  };
+
+  const handleSearchResultSelect = (result: SearchResult) => {
+    // 这里可以实现跳转到特定消息的功能
+    console.log('跳转到消息:', result);
+    // TODO: 实现消息定位和高亮功能
   };
 
   const getChannelIcon = (channel: Channel) => {
@@ -141,6 +151,13 @@ const ChatInterface: React.FC = () => {
       {/* 连接状态指示器 */}
       <ConnectionStatus />
 
+      {/* AI智能搜索弹窗 */}
+      <SmartSearch
+        isVisible={showSmartSearch}
+        onClose={() => setShowSmartSearch(false)}
+        onSelectResult={handleSearchResultSelect}
+      />
+
       {/* 频道头部 - 固定在顶部 */}
       <div className="flex-shrink-0 bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
@@ -183,16 +200,16 @@ const ChatInterface: React.FC = () => {
               </div>
             )}
 
-            {/* 搜索按钮 */}
+            {/* AI智能搜索按钮 */}
             <button
-              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg"
-              title="搜索消息"
-              onClick={() => {
-                console.log('搜索功能待实现');
-                // TODO: 实现搜索功能
-              }}
+              className="group p-2 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+              title="AI智能搜索 - 理解您的搜索意图"
+              onClick={() => setShowSmartSearch(true)}
             >
-              <Search className="h-4 w-4" />
+              <div className="relative">
+                <Search className="h-4 w-4" />
+                <Brain className="h-2 w-2 absolute -top-1 -right-1 text-purple-500 group-hover:text-purple-600" />
+              </div>
             </button>
 
             {/* 固定消息按钮 */}
@@ -304,6 +321,23 @@ const ChatInterface: React.FC = () => {
                   }`}>
                     {getConnectionText()}
                   </span>
+                </div>
+              </div>
+
+              {/* AI功能提示 */}
+              <div className="p-4 bg-purple-50 rounded-lg">
+                <div className="flex items-start space-x-3">
+                  <Brain className="h-5 w-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-medium text-purple-900 mb-2">
+                      AI智能功能
+                    </h4>
+                    <ul className="text-sm text-purple-700 space-y-1">
+                      <li>• 智能消息建议 - 点击输入框旁的✨按钮</li>
+                      <li>• AI语义搜索 - 点击顶部的搜索按钮</li>
+                      <li>• 自动摘要生成 - 在设置中启用</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
 

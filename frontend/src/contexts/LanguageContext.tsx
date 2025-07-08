@@ -258,6 +258,38 @@ type TranslationKeys = {
   'messages.online': string;
   'messages.offline': string;
   'teams.created_at': string;
+  
+  // 开发进度
+  'progress.title': string;
+  'progress.subtitle': string;
+  'progress.completed': string;
+  'progress.in_progress': string;
+  'progress.planned': string;
+  'progress.overall': string;
+  'progress.stage1.title': string;
+  'progress.stage1.subtitle': string;
+  'progress.stage2.title': string;
+  'progress.stage2.subtitle': string;
+  'progress.stage3.title': string;
+  'progress.stage3.subtitle': string;
+  'progress.feature.auth': string;
+  'progress.feature.teams': string;
+  'progress.feature.channels': string;
+  'progress.feature.messages': string;
+  'progress.feature.websocket': string;
+  'progress.feature.ui': string;
+  'progress.feature.i18n': string;
+  'progress.feature.ai_assistant': string;
+  'progress.feature.smart_suggestions': string;
+  'progress.feature.auto_summary': string;
+  'progress.feature.intelligent_search': string;
+  'progress.feature.workflow_automation': string;
+  'progress.feature.code_integration': string;
+  'progress.feature.virtual_spaces': string;
+  'progress.feature.focus_rooms': string;
+  'progress.feature.brainstorm_mode': string;
+  'progress.feature.emotional_intelligence': string;
+  'progress.feature.predictive_collaboration': string;
 };
 
 // 多语言资源
@@ -506,6 +538,38 @@ const translations: Record<Language, TranslationKeys> = {
      'messages.online': '在线',
      'messages.offline': '离线',
      'teams.created_at': '创建于 {{date}}',
+     
+     // 开发进度
+     'progress.title': '🚀 开发进度',
+     'progress.subtitle': '产品功能开发计划',
+     'progress.completed': '✓ 已完成',
+     'progress.in_progress': '🚀 开发中',
+     'progress.planned': '📅 计划中',
+     'progress.overall': '总体进度',
+     'progress.stage1.title': '第一阶段：AI智能基础',
+     'progress.stage1.subtitle': '智能消息建议、自动摘要、语义搜索',
+     'progress.stage2.title': '第二阶段：工作流革命',
+     'progress.stage2.subtitle': '内置项目管理、代码协作、自动化工作流',
+     'progress.stage3.title': '第三阶段：沉浸式体验',
+     'progress.stage3.subtitle': '虚拟协作空间、AR/VR支持、高级AI分析',
+     'progress.feature.auth': '用户认证系统',
+     'progress.feature.teams': '团队管理功能',
+     'progress.feature.channels': '频道管理',
+     'progress.feature.messages': '实时聊天',
+     'progress.feature.websocket': 'WebSocket实时通信',
+     'progress.feature.ui': 'UI优化升级',
+     'progress.feature.i18n': '中英文切换',
+     'progress.feature.ai_assistant': 'AI智能助手',
+     'progress.feature.smart_suggestions': '智能消息建议',
+     'progress.feature.auto_summary': '自动会议纪要',
+     'progress.feature.intelligent_search': '智能语义搜索',
+     'progress.feature.workflow_automation': '工作流自动化',
+     'progress.feature.code_integration': '代码协作集成',
+     'progress.feature.virtual_spaces': '虚拟协作空间',
+     'progress.feature.focus_rooms': '专注房间',
+     'progress.feature.brainstorm_mode': '头脑风暴模式',
+     'progress.feature.emotional_intelligence': '情感智能分析',
+     'progress.feature.predictive_collaboration': '预测性协作',
   },
   en: {
     // Common
@@ -751,6 +815,38 @@ const translations: Record<Language, TranslationKeys> = {
      'messages.online': 'Online',
      'messages.offline': 'Offline',
      'teams.created_at': 'Created at {{date}}',
+     
+     // Development Progress
+     'progress.title': '🚀 Development Progress',
+     'progress.subtitle': 'Product Feature Development Plan',
+     'progress.completed': '✓ Completed',
+     'progress.in_progress': '🚀 In Progress',
+     'progress.planned': '📅 Planned',
+     'progress.overall': 'Overall Progress',
+     'progress.stage1.title': 'Stage 1: AI Intelligence Foundation',
+     'progress.stage1.subtitle': 'Smart message suggestions, auto summaries, semantic search',
+     'progress.stage2.title': 'Stage 2: Workflow Revolution',
+     'progress.stage2.subtitle': 'Built-in project management, code collaboration, workflow automation',
+     'progress.stage3.title': 'Stage 3: Immersive Experience',
+     'progress.stage3.subtitle': 'Virtual collaboration spaces, AR/VR support, advanced AI analytics',
+     'progress.feature.auth': 'User Authentication System',
+     'progress.feature.teams': 'Team Management',
+     'progress.feature.channels': 'Channel Management',
+     'progress.feature.messages': 'Real-time Chat',
+     'progress.feature.websocket': 'WebSocket Real-time Communication',
+     'progress.feature.ui': 'UI Optimization',
+     'progress.feature.i18n': 'Chinese/English Switch',
+     'progress.feature.ai_assistant': 'AI Smart Assistant',
+     'progress.feature.smart_suggestions': 'Smart Message Suggestions',
+     'progress.feature.auto_summary': 'Auto Meeting Summary',
+     'progress.feature.intelligent_search': 'Intelligent Semantic Search',
+     'progress.feature.workflow_automation': 'Workflow Automation',
+     'progress.feature.code_integration': 'Code Collaboration Integration',
+     'progress.feature.virtual_spaces': 'Virtual Collaboration Spaces',
+     'progress.feature.focus_rooms': 'Focus Rooms',
+     'progress.feature.brainstorm_mode': 'Brainstorm Mode',
+     'progress.feature.emotional_intelligence': 'Emotional Intelligence Analytics',
+     'progress.feature.predictive_collaboration': 'Predictive Collaboration',
   },
 };
 

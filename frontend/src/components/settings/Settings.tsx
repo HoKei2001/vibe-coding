@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { User, Shield, Bell, Palette } from 'lucide-react';
+import { User, Shield, Bell, Palette, Brain } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import Navigation from '../common/Navigation';
 import ProfileSettings from './ProfileSettings';
 import AppearanceSettings from './AppearanceSettings';
 import NotificationSettings from './NotificationSettings';
+import AISettings from '../ai/AISettings';
 
-type SettingsTab = 'profile' | 'security' | 'notifications' | 'appearance';
+type SettingsTab = 'profile' | 'security' | 'notifications' | 'appearance' | 'ai';
 
 const Settings: React.FC = () => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ const Settings: React.FC = () => {
   // 根据URL参数设置初始标签页
   useEffect(() => {
     const tab = searchParams.get('tab') as SettingsTab;
-    if (tab && ['profile', 'security', 'notifications', 'appearance'].includes(tab)) {
+    if (tab && ['profile', 'security', 'notifications', 'appearance', 'ai'].includes(tab)) {
       setActiveTab(tab);
     }
   }, [searchParams]);
@@ -29,6 +30,12 @@ const Settings: React.FC = () => {
       name: t('settings.profile.title'),
       icon: User,
       description: t('settings.profile.description')
+    },
+    {
+      id: 'ai' as SettingsTab,
+      name: 'AI智能助手',
+      icon: Brain,
+      description: '配置AI功能和个性化设置'
     },
     {
       id: 'security' as SettingsTab,
@@ -54,6 +61,8 @@ const Settings: React.FC = () => {
     switch (activeTab) {
       case 'profile':
         return <ProfileSettings />;
+      case 'ai':
+        return <AISettings />;
       case 'security':
         return (
           <div className="bg-white rounded-lg shadow p-6">
@@ -110,12 +119,19 @@ const Settings: React.FC = () => {
                         <div className="flex items-center space-x-3">
                           <Icon className={`h-5 w-5 transition-colors ${
                             isActive 
-                              ? 'text-primary-600 dark:text-primary-400' 
+                              ? tab.id === 'ai' 
+                                ? 'text-purple-600 dark:text-purple-400'
+                                : 'text-primary-600 dark:text-primary-400'
                               : 'text-secondary-400 group-hover:text-secondary-600 dark:group-hover:text-secondary-300'
                           }`} />
                           <div className="text-left">
                             <div className={`font-medium text-sm ${isActive ? 'text-primary-700 dark:text-primary-300' : ''}`}>
                               {tab.name}
+                              {tab.id === 'ai' && (
+                                <span className="ml-1 px-1.5 py-0.5 text-xs bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full">
+                                  NEW
+                                </span>
+                              )}
                             </div>
                             <div className="text-xs text-secondary-500 dark:text-secondary-400 mt-0.5">
                               {tab.description}

@@ -8,6 +8,7 @@ from app.models.message import Message
 from app.models.team_member import TeamMember
 from app.models.channel_member import ChannelMember
 from app.models.notification import Notification
+from app.models.ai_task import AITask, AIConfig, MessageSuggestionLog, ChannelSummary
 
 __all__ = [
     "User",
@@ -16,5 +17,9 @@ __all__ = [
     "Message",
     "TeamMember",
     "ChannelMember",
-    "Notification"
+    "Notification",
+    "AITask",
+    "AIConfig", 
+    "MessageSuggestionLog",
+    "ChannelSummary"
 ] 

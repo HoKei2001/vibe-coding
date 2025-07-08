@@ -8,9 +8,11 @@ import {
   Paperclip, 
   Smile, 
   X,
-  Reply
+  Reply,
+  Sparkles
 } from 'lucide-react';
 import type { Message } from '../../types';
+import MessageSuggestions from '../ai/MessageSuggestions';
 
 interface MessageInputProps {
   channelId: number;
@@ -24,12 +26,13 @@ const MessageInput: React.FC<MessageInputProps> = ({
   onCancelReply 
 }) => {
   const dispatch = useAppDispatch();
-  const { sendingMessage } = useAppSelector((state) => state.messages);
+  const { sendingMessage, currentMessages } = useAppSelector((state) => state.messages);
   const { connectionState } = useAppSelector((state) => state.websocket);
   const { user } = useAppSelector((state) => state.auth);
   
   const [content, setContent] = useState('');
   const [showAttachments, setShowAttachments] = useState(false);
+  const [showAISuggestions, setShowAISuggestions] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
@@ -53,6 +56,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
       await dispatch(sendMessage({ channelId, messageData }));
       setContent('');
       onCancelReply?.();
+      setShowAISuggestions(false);
       
       // 自动调整文本框高度
       if (textareaRef.current) {
@@ -69,6 +73,8 @@ const MessageInput: React.FC<MessageInputProps> = ({
       handleSubmit(e);
     } else if (e.key === 'Escape' && replyToMessage) {
       onCancelReply?.();
+    } else if (e.key === 'Escape' && showAISuggestions) {
+      setShowAISuggestions(false);
     }
   };
 
@@ -135,11 +141,60 @@ const MessageInput: React.FC<MessageInputProps> = ({
     }
   };
 
+  // AI 建议相关处理
+  const handleAISuggestionsToggle = () => {
+    setShowAISuggestions(!showAISuggestions);
+  };
+
+  const handleSelectSuggestion = (suggestion: string) => {
+    setContent(suggestion);
+    setShowAISuggestions(false);
+    // 重新聚焦到输入框
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+      // 调整文本框高度
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`;
+    }
+  };
+
+  const getMessageContext = () => {
+    // 获取最近几条消息作为上下文
+    const recentMessages = currentMessages.slice(-5).map(msg => ({
+      author: msg.author.username,
+      content: msg.content,
+      timestamp: msg.created_at
+    }));
+    
+    return {
+      recent_messages: recentMessages,
+      reply_to: replyToMessage ? {
+        author: replyToMessage.author.username,
+        content: replyToMessage.content
+      } : undefined
+    };
+  };
+
   // 检查是否可以发送消息
   const canSendMessage = content.trim() && !sendingMessage && connectionState === 'connected';
 
   return (
-    <div className="border-t border-gray-200 bg-white">
+    <div className="border-t border-gray-200 bg-white relative">
+      {/* AI 建议面板 */}
+      {showAISuggestions && (
+        <div className="absolute bottom-full left-0 right-0 z-50">
+          <MessageSuggestions
+            channelId={channelId}
+            context={JSON.stringify(getMessageContext())}
+            topic={replyToMessage?.content}
+            isVisible={showAISuggestions}
+            onClose={() => setShowAISuggestions(false)}
+            onSelectSuggestion={handleSelectSuggestion}
+            className="mx-4 mb-2"
+          />
+        </div>
+      )}
+
       {/* 回复提示 */}
       {replyToMessage && (
         <div className="flex items-center justify-between p-3 bg-gray-50 border-b border-gray-200">
@@ -195,6 +250,20 @@ const MessageInput: React.FC<MessageInputProps> = ({
             <Plus className="h-5 w-5" />
           </button>
 
+          {/* AI建议按钮 */}
+          <button
+            type="button"
+            onClick={handleAISuggestionsToggle}
+            className={`p-2 rounded-lg transition-colors ${
+              showAISuggestions 
+                ? 'bg-purple-100 text-purple-600' 
+                : 'text-gray-400 hover:text-purple-600 hover:bg-purple-100'
+            }`}
+            title="AI智能建议"
+          >
+            <Sparkles className="h-5 w-5" />
+          </button>
+
           {/* 输入框 */}
           <div className="flex-1 relative">
             <textarea
@@ -204,7 +273,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
               onKeyDown={handleKeyDown}
               onFocus={handleFocus}
               onBlur={handleBlur}
-              placeholder={replyToMessage ? '回复消息...' : '输入消息...'}
+              placeholder={replyToMessage ? '回复消息...' : '输入消息... (💡 点击AI图标获取智能建议)'}
               className={`w-full p-3 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:border-transparent ${
                 connectionState === 'connected' 
                   ? 'border-gray-300 focus:ring-blue-500' 
@@ -246,6 +315,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
         <div className="mt-2 text-xs text-gray-500">
           按 Enter 发送，Shift + Enter 换行
           {replyToMessage && '，按 Escape 取消回复'}
+          {showAISuggestions && '，按 Escape 关闭AI建议'}
           {connectionState !== 'connected' && (
             <span className="text-red-500 ml-2">
               • 连接断开，无法发送消息

@@ -235,56 +235,161 @@ const Dashboard: React.FC = () => {
           {/* 开发进度 */}
           <div className="card p-6 animate-fade-in animate-delay-300">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-secondary-900 dark:text-secondary-100">
-                🚀 开发进度
-              </h2>
-              <span className="badge badge-success">98% 完成</span>
+              <div>
+                <h2 className="text-xl font-semibold text-secondary-900 dark:text-secondary-100">
+                  {t('progress.title')}
+                </h2>
+                <p className="text-sm text-secondary-600 dark:text-secondary-400 mt-1">
+                  {t('progress.subtitle')}
+                </p>
+              </div>
+              <span className="badge badge-success">Phase 1</span>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[
-                { name: '用户认证系统', completed: true },
-                { name: '团队管理功能', completed: true },
-                { name: '团队成员管理', completed: true },
-                { name: '频道管理', completed: true },
-                { name: '实时聊天', completed: true },
-                { name: 'WebSocket实时通信', completed: true },
-                { name: '个人设置页面', completed: true },
-                { name: 'UI优化升级', completed: true },
-                { name: '中英文切换', completed: true, isNew: true },
-              ].map((item, index) => (
-                <div 
-                  key={item.name} 
-                  className="flex items-center justify-between p-3 rounded-lg bg-secondary-50 dark:bg-dark-800 hover:bg-secondary-100 dark:hover:bg-dark-700 transition-colors"
-                  style={{ animationDelay: `${(index + 4) * 100}ms` }}
-                >
-                  <div className="flex items-center space-x-3">
-                    <div className={`w-2 h-2 rounded-full ${item.completed ? 'bg-success-500' : 'bg-secondary-300'}`} />
-                    <span className="text-secondary-700 dark:text-secondary-300 text-sm">
-                      {item.name}
-                      {item.isNew && <span className="ml-2 badge badge-primary text-xs">新增</span>}
+            {/* 开发阶段 */}
+            <div className="mb-6 space-y-4">
+              {/* 阶段1：AI智能基础 */}
+              <div className="border border-primary-200 dark:border-primary-800 rounded-lg p-4 bg-primary-50 dark:bg-primary-900/20">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-lg font-semibold text-primary-900 dark:text-primary-100">
+                    {t('progress.stage1.title')}
+                  </h3>
+                  <span className="badge badge-primary">{t('progress.in_progress')}</span>
+                </div>
+                <p className="text-sm text-primary-700 dark:text-primary-300 mb-3">
+                  {t('progress.stage1.subtitle')}
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {[
+                    { key: 'ai_assistant', completed: false, inProgress: true },
+                    { key: 'smart_suggestions', completed: false },
+                    { key: 'auto_summary', completed: false },
+                    { key: 'intelligent_search', completed: false },
+                  ].map((item, index) => (
+                    <div key={item.key} className="flex items-center space-x-2">
+                      <div className={`w-2 h-2 rounded-full ${
+                        item.completed ? 'bg-success-500' : 
+                        item.inProgress ? 'bg-warning-500 animate-pulse' : 
+                        'bg-secondary-300'
+                      }`} />
+                      <span className="text-sm text-primary-700 dark:text-primary-300">
+                        {t(`progress.feature.${item.key}`)}
+                      </span>
+                      {item.inProgress && (
+                        <span className="badge badge-warning text-xs">{t('progress.in_progress')}</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 阶段2：工作流革命 */}
+              <div className="border border-secondary-200 dark:border-secondary-700 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100">
+                    {t('progress.stage2.title')}
+                  </h3>
+                  <span className="badge badge-secondary">{t('progress.planned')}</span>
+                </div>
+                <p className="text-sm text-secondary-600 dark:text-secondary-400 mb-3">
+                  {t('progress.stage2.subtitle')}
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {[
+                    { key: 'workflow_automation' },
+                    { key: 'code_integration' },
+                  ].map((item, index) => (
+                    <div key={item.key} className="flex items-center space-x-2">
+                      <div className="w-2 h-2 rounded-full bg-secondary-300" />
+                      <span className="text-sm text-secondary-600 dark:text-secondary-400">
+                        {t(`progress.feature.${item.key}`)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 阶段3：沉浸式体验 */}
+              <div className="border border-secondary-200 dark:border-secondary-700 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100">
+                    {t('progress.stage3.title')}
+                  </h3>
+                  <span className="badge badge-secondary">{t('progress.planned')}</span>
+                </div>
+                <p className="text-sm text-secondary-600 dark:text-secondary-400 mb-3">
+                  {t('progress.stage3.subtitle')}
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {[
+                    { key: 'virtual_spaces' },
+                    { key: 'focus_rooms' },
+                    { key: 'brainstorm_mode' },
+                    { key: 'emotional_intelligence' },
+                    { key: 'predictive_collaboration' },
+                  ].map((item, index) => (
+                    <div key={item.key} className="flex items-center space-x-2">
+                      <div className="w-2 h-2 rounded-full bg-secondary-300" />
+                      <span className="text-sm text-secondary-600 dark:text-secondary-400">
+                        {t(`progress.feature.${item.key}`)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* 已完成功能 */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100 mb-3">
+                {t('progress.completed')} 基础功能
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {[
+                  { key: 'auth' },
+                  { key: 'teams' },
+                  { key: 'channels' },
+                  { key: 'messages' },
+                  { key: 'websocket' },
+                  { key: 'ui' },
+                  { key: 'i18n', isNew: true },
+                ].map((item, index) => (
+                  <div 
+                    key={item.key} 
+                    className="flex items-center justify-between p-3 rounded-lg bg-secondary-50 dark:bg-dark-800 hover:bg-secondary-100 dark:hover:bg-dark-700 transition-colors"
+                    style={{ animationDelay: `${(index + 4) * 100}ms` }}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 rounded-full bg-success-500" />
+                      <span className="text-secondary-700 dark:text-secondary-300 text-sm">
+                        {t(`progress.feature.${item.key}`)}
+                        {item.isNew && <span className="ml-2 badge badge-primary text-xs">新增</span>}
+                      </span>
+                    </div>
+                    <span className="text-success-600 dark:text-success-400 font-medium text-sm">
+                      {t('progress.completed')}
                     </span>
                   </div>
-                  {item.completed && (
-                    <span className="text-success-600 dark:text-success-400 font-medium text-sm">
-                      ✓ 已完成
-                    </span>
-                  )}
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
             
             {/* 进度条 */}
             <div className="mt-6">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-secondary-600 dark:text-secondary-400">总体进度</span>
-                <span className="text-sm font-medium text-secondary-900 dark:text-secondary-100">98%</span>
+                <span className="text-sm text-secondary-600 dark:text-secondary-400">{t('progress.overall')}</span>
+                <span className="text-sm font-medium text-secondary-900 dark:text-secondary-100">第一阶段开始</span>
               </div>
               <div className="w-full bg-secondary-200 dark:bg-dark-700 rounded-full h-2">
                 <div 
                   className="bg-gradient-to-r from-success-500 to-primary-500 h-2 rounded-full transition-all duration-1000 ease-out"
-                  style={{ width: '98%' }}
+                  style={{ width: '65%' }}
                 />
+              </div>
+              <div className="flex justify-between mt-2 text-xs text-secondary-500 dark:text-secondary-400">
+                <span>基础功能完成</span>
+                <span>AI功能开发</span>
+                <span>未来创新</span>
               </div>
             </div>
           </div>
